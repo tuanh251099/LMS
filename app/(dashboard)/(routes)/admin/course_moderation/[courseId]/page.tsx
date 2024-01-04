@@ -64,6 +64,17 @@ const CourseIdPage = async ({
     course.chapters.some(chapter => chapter.isPublished),
     course.isApproved
   ];
+  
+  const toggleApproval = async () => {
+    await db.course.update({
+      where: {
+        id: params.courseId,
+      },
+      data: {
+        isApproved: !course.isApproved,
+      },
+    });
+  };
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -80,7 +91,7 @@ const CourseIdPage = async ({
           label="This course is unpublished. It will not be visible to the students."
         />
       )}
-            {!isAdminApproved && (
+      {!isAdminApproved && (
         <Banner
           label="This course is waiting admin approval."
         />
@@ -91,6 +102,11 @@ const CourseIdPage = async ({
             <h1 className="text-2xl font-medium">
               Course setup
             </h1>
+            {/* {isAdminApproved !== undefined && (
+              <button onClick={toggleApproval}>
+                {course.isApproved ? "Unapprove" : "Approve"}
+              </button>
+            )} */}
             <span className="text-sm text-slate-700">
               Complete all fields {completionText}
             </span>

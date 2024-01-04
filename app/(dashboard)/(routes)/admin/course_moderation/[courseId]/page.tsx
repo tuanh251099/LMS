@@ -14,6 +14,7 @@ import { PriceForm } from "./_components/price-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
+import CourseApproval from "./_components/approve";
 
 const CourseIdPage = async ({
   params
@@ -65,17 +66,6 @@ const CourseIdPage = async ({
     course.isApproved
   ];
   
-  const toggleApproval = async () => {
-    await db.course.update({
-      where: {
-        id: params.courseId,
-      },
-      data: {
-        isApproved: !course.isApproved,
-      },
-    });
-  };
-
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
 
@@ -102,11 +92,8 @@ const CourseIdPage = async ({
             <h1 className="text-2xl font-medium">
               Course setup
             </h1>
-            {/* {isAdminApproved !== undefined && (
-              <button onClick={toggleApproval}>
-                {course.isApproved ? "Unapprove" : "Approve"}
-              </button>
-            )} */}
+            <CourseApproval courseId={{ courseId: params.courseId }}>
+            </CourseApproval>
             <span className="text-sm text-slate-700">
               Complete all fields {completionText}
             </span>
